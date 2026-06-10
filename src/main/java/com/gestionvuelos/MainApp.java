@@ -6,19 +6,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        URL vista = MainApp.class.getResource("/views/MainView.fxml");
-
-        if (vista == null) {
-            throw new IOException("No se ha encontrado el archivo MainView.fxml");
-        }
-
-        FXMLLoader fxmlLoader = new FXMLLoader(vista);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("/views/MainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         stage.setTitle("Gestion de Vuelos");
