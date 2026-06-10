@@ -13,11 +13,12 @@ import java.util.List;
 public class VueloDAO {
 
     public void crearTabla() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS vuelo ("
-                + "numero_vuelo VARCHAR(10) PRIMARY KEY, "
-                + "destino VARCHAR(100) NOT NULL, "
-                + "fecha_salida DATE NOT NULL, "
-                + "duracion INT NOT NULL"
+        String sql = "CREATE TABLE IF NOT EXISTS flight ("
+                + "id_flight SERIAL PRIMARY KEY, "
+                + "num_flight VARCHAR(100) UNIQUE NOT NULL, "
+                + "destination VARCHAR(100) NOT NULL, "
+                + "departure DATE NOT NULL, "
+                + "duration INT DEFAULT 30"
                 + ")";
 
         try (Connection conexion = ConexionBD.getConnection();
@@ -27,7 +28,7 @@ public class VueloDAO {
     }
 
     public void insertar(Vuelo vuelo) throws SQLException {
-        String sql = "INSERT INTO vuelo (numero_vuelo, destino, fecha_salida, duracion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO flight (num_flight, destination, departure, duration) VALUES (?, ?, ?, ?)";
 
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -40,7 +41,7 @@ public class VueloDAO {
     }
 
     public void eliminar(String numeroVuelo) throws SQLException {
-        String sql = "DELETE FROM vuelo WHERE numero_vuelo = ?";
+        String sql = "DELETE FROM flight WHERE num_flight = ?";
 
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -50,7 +51,7 @@ public class VueloDAO {
     }
 
     public List<Vuelo> listarTodos() throws SQLException {
-        String sql = "SELECT numero_vuelo, destino, fecha_salida, duracion FROM vuelo ORDER BY fecha_salida";
+        String sql = "SELECT num_flight, destination, departure, duration FROM flight ORDER BY departure";
 
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement statement = conexion.prepareStatement(sql);
@@ -60,10 +61,10 @@ public class VueloDAO {
     }
 
     public List<Vuelo> filtrarDuracionMayor180() throws SQLException {
-        String sql = "SELECT numero_vuelo, destino, fecha_salida, duracion "
-                + "FROM vuelo "
-                + "WHERE duracion > 180 "
-                + "ORDER BY fecha_salida";
+        String sql = "SELECT num_flight, destination, departure, duration "
+                + "FROM flight "
+                + "WHERE duration > 180 "
+                + "ORDER BY departure";
 
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement statement = conexion.prepareStatement(sql);
@@ -73,10 +74,10 @@ public class VueloDAO {
     }
 
     public List<Vuelo> filtrarPorDestino(String destino) throws SQLException {
-        String sql = "SELECT numero_vuelo, destino, fecha_salida, duracion "
-                + "FROM vuelo "
-                + "WHERE destino = ? "
-                + "ORDER BY fecha_salida";
+        String sql = "SELECT num_flight, destination, departure, duration "
+                + "FROM flight "
+                + "WHERE destination = ? "
+                + "ORDER BY departure";
 
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -93,10 +94,10 @@ public class VueloDAO {
 
         while (resultSet.next()) {
             Vuelo vuelo = new Vuelo(
-                    resultSet.getString("numero_vuelo"),
-                    resultSet.getString("destino"),
-                    resultSet.getDate("fecha_salida").toLocalDate(),
-                    resultSet.getInt("duracion")
+                    resultSet.getString("num_flight"),
+                    resultSet.getString("destination"),
+                    resultSet.getDate("departure").toLocalDate(),
+                    resultSet.getInt("duration")
             );
             vuelos.add(vuelo);
         }
