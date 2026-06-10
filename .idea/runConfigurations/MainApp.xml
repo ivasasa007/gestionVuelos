@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MainApp" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.gestionvuelos.MainApp" />
+    <module name="gestionVuelos" />
+    <option name="VM_PARAMETERS" value="--module-path lib\javafx --add-modules javafx.controls,javafx.fxml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
